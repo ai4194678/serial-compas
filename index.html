@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SERIAL COMPASS — найди свою следующую историю</title>
+<meta name="description" content="SERIAL COMPASS — интерактивная платформа для поиска сериалов по настроению: подбор, мини-игры, исследование данных и личная коллекция.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%234D9DB5' stroke-width='2'/%3E%3Cpath d='M16 6l4 10-4 10-4-10z' fill='%237774B8'/%3E%3C/svg%3E">
+</head>
+<body data-mood="">
+
+<!-- Живой фон -->
+<div class="bg-aurora" aria-hidden="true">
+  <div class="aurora a1"></div>
+  <div class="aurora a2"></div>
+  <div class="aurora a3"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+</div>
+
+<header class="topbar">
+  <a class="brand" href="#" data-nav="home" aria-label="SERIAL COMPASS — на главную">
+    <span class="brand-orb" aria-hidden="true"><canvas id="brandCompass" width="72" height="72"></canvas></span>
+    <span class="brand-name">SERIAL<b>COMPASS</b></span>
+  </a>
+  <button class="nav-toggle" id="navToggle" aria-label="Открыть меню" aria-expanded="false"><span></span><span></span><span></span></button>
+  <nav class="nav" id="mainNav" aria-label="Основная навигация">
+    <a href="#" data-nav="home"    class="nav-link">Главная</a>
+    <a href="#" data-nav="podborka" class="nav-link">Подбор</a>
+    <a href="#" data-nav="games"   class="nav-link">Игры</a>
+    <a href="#" data-nav="explore" class="nav-link">Исследование</a>
+    <a href="#" data-nav="space"   class="nav-link">Моё пространство</a>
+    <span class="nav-score" id="navScore" title="Ваши очки в играх">★ <b id="navScoreValue">0</b></span>
+  </nav>
+</header>
+
+<main id="app">
+
+  <!-- ============ ГЛАВНАЯ ============ -->
+  <section class="view" id="view-home" aria-label="Главная">
+    <div class="hero">
+      <div class="hero-compass">
+        <canvas id="mainCompass" width="640" height="640" aria-label="Живой компас — фирменный объект SERIAL COMPASS"></canvas>
+      </div>
+      <div class="hero-text">
+        <p class="hero-eyebrow">интерактивная платформа о сериалах</p>
+        <h1 class="hero-title">Найди свою<br><span class="grad-text">следующую историю</span></h1>
+        <p class="hero-sub">Не знаешь, что посмотреть? SERIAL COMPASS подберёт сериал под твоё настроение, познакомит с новыми историями и превратит поиск в исследование.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" data-action="go-podbor">Найти мой сериал</button>
+          <button class="btn btn-ghost btn-lg" data-action="surprise">Удиви меня</button>
+        </div>
+        <dl class="hero-stats" id="homeStats"></dl>
+      </div>
+    </div>
+
+    <div class="modal" id="surpriseModal" hidden>
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-body" id="surpriseBody" role="dialog" aria-modal="true" aria-label="Случайный сериал"></div>
+    </div>
+
+    <section class="home-block">
+      <div class="block-head">
+        <h2>Стоит начать с этих</h2>
+        <p>Сериалы с самыми высокими рейтингами Кинопоиска в нашей базе</p>
+      </div>
+      <div class="card-row" id="homeTop"></div>
+    </section>
+
+    <section class="home-block">
+      <div class="block-head">
+        <h2>Что умеет SERIAL COMPASS</h2>
+        <p>Пять способов открыть свою следующую историю</p>
+      </div>
+      <div class="feature-grid">
+        <article class="feature-card" data-action="go-podbor">
+          <div class="feature-ico f1" aria-hidden="true">🧭</div>
+          <h3>Подбор по настроению</h3>
+          <p>Пройди четырёхэтапный тест — и получи три персональные рекомендации: идеальное совпадение, неожиданный выбор и популярный выбор.</p>
+        </article>
+        <article class="feature-card" data-action="go-games">
+          <div class="feature-ico f2" aria-hidden="true">🎮</div>
+          <h3>Мини-игры</h3>
+          <p>Угадывай рейтинги, участвуй в битвах сериалов, узнавай истории по актёрам и выясни, какой ты зритель.</p>
+        </article>
+        <article class="feature-card" data-action="go-explore">
+          <div class="feature-ico f3" aria-hidden="true">📡</div>
+          <h3>Исследование данных</h3>
+          <p>Лидеры рейтинга, самые популярные, скрытые жемчужины, жанры, актёры и сравнение сериалов — всё на реальных данных.</p>
+        </article>
+        <article class="feature-card" data-action="go-space">
+          <div class="feature-ico f4" aria-hidden="true">🪐</div>
+          <h3>Моё пространство</h3>
+          <p>Собери избранное и список «хочу посмотреть», вернись к прошлым рекомендациям и следи за игровыми достижениями.</p>
+        </article>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============ ПОДБОР ============ -->
+  <section class="view" id="view-podborka" aria-label="Подбор">
+    <div class="view-head">
+      <h1>Подбор сериала</h1>
+      <p>Ответь на четыре вопроса — система рекомендаций на основе заданных критериев найдёт историю для тебя.</p>
+    </div>
+
+    <div id="quizArea"></div>
+
+    <div class="home-block" id="filtersBlock" hidden>
+      <div class="block-head">
+        <h2>Классические фильтры</h2>
+        <p>Или найди сериал сам — все фильтры работают с реальными данными базы</p>
+      </div>
+      <div class="filters" id="filtersPanel"></div>
+      <div class="card-grid" id="filtersResults"></div>
+      <p class="empty-note" id="filtersEmpty" hidden>По этим фильтрам ничего не нашлось. Попробуй ослабить условия.</p>
+    </div>
+  </section>
+
+  <!-- ============ ИГРЫ ============ -->
+  <section class="view" id="view-games" aria-label="Игры">
+    <div class="view-head">
+      <h1>Игровая зона</h1>
+      <p>Четыре мини-игры на реальных данных о сериалах. Очки сохраняются в «Моём пространстве».</p>
+    </div>
+    <div id="gamesHub"></div>
+    <div id="gameArena"></div>
+  </section>
+
+  <!-- ============ ИССЛЕДОВАНИЕ ============ -->
+  <section class="view" id="view-explore" aria-label="Исследование">
+    <div class="view-head">
+      <h1>Исследование</h1>
+      <p>Аналитика на основе датасета: лидеры, жемчужины, жанры, актёры и сравнение сериалов.</p>
+    </div>
+    <div class="subnav" id="exploreNav" role="tablist" aria-label="Подразделы исследования"></div>
+    <div id="exploreArea"></div>
+  </section>
+
+  <!-- ============ МОЁ ПРОСТРАНСТВО ============ -->
+  <section class="view" id="view-space" aria-label="Моё пространство">
+    <div class="view-head">
+      <h1>Моё пространство</h1>
+      <p>Твоя личная коллекция. Данные хранятся локально в браузере и переживают перезагрузку страницы.</p>
+    </div>
+    <div id="spaceArea"></div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>SERIAL COMPASS — «Не знаешь, что посмотреть? Найдём твою следующую историю». Данные: датасет Kinopoisk (creative_hse_2026). Рейтинги и количества оценок — реальные значения из датасета.</p>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="data/series.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/compass.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/recommend.js"></script>
+<script src="js/views/home.js"></script>
+<script src="js/views/podborka.js"></script>
+<script src="js/views/games.js"></script>
+<script src="js/views/explore.js"></script>
+<script src="js/views/space.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
